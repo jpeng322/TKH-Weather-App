@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { DeleteIcon, EditIcon, CheckIcon, CancelIcon } from "../src/Icons";
-const Task = ({ todo, deleteTodo }) => {
+const Task = ({ todo, deleteTodo, editTodo }) => {
   const [confirmDeleteMode, setConfirmDeleteMode] = useState(false);
   const [editTaskMode, setEditTaskMode] = useState(false);
   const [editTaskInput, setEditTaskInput] = useState(todo.todo);
   const [showEditTask, setShowEditTask] = useState(false);
-
+console.log(editTaskInput)
   const renderEditInput = () => {
     setTimeout(() => {
       setShowEditTask(true);
@@ -17,7 +17,6 @@ const Task = ({ todo, deleteTodo }) => {
         <div className="todo-task slide-left" key={todo._id}>
           <div className="todo-task-description">Confirm Delete?</div>
           <div className="todo-task-icons">
-            {/* <button onClick={() => deleteTodo(todo._id)}> */}
             <button onClick={() => deleteTodo(todo._id)}>
               <CheckIcon />
             </button>
@@ -33,6 +32,7 @@ const Task = ({ todo, deleteTodo }) => {
           <div className="todo-task-description">
             {showEditTask && (
               <input
+                className="edit-input"
                 type="text"
                 value={editTaskInput}
                 onChange={(e) => setEditTaskInput(e.target.value)}
@@ -40,8 +40,13 @@ const Task = ({ todo, deleteTodo }) => {
             )}
           </div>
           <div className="todo-task-icons">
-            {/* <button onClick={() => deleteTodo(todo._id)}> */}
-            <button onClick={() => deleteTodo(todo._id)}>
+            <button
+              onClick={() => {
+                editTodo(todo._id, editTaskInput);
+                setEditTaskMode(false);
+                setShowEditTask(false);
+              }}
+            >
               <CheckIcon />
             </button>
             <button
@@ -60,7 +65,6 @@ const Task = ({ todo, deleteTodo }) => {
         <div className="todo-task" key={todo._id}>
           <div className="todo-task-description">{todo.todo}</div>
           <div className="todo-task-icons">
-            {/* <button onClick={() => deleteTodo(todo._id)}> */}
             <button onClick={() => setConfirmDeleteMode(true)}>
               <DeleteIcon />
             </button>
@@ -77,36 +81,7 @@ const Task = ({ todo, deleteTodo }) => {
       );
     }
   };
-  return (
-    <>
-      {renderTodoTask()}
-      {/* {confirmDeleteMode ? (
-        <div className="todo-task slide-left" key={todo._id}>
-          <div className="todo-task-description">Confirm Delete?</div>
-          <div className="todo-task-icons">
-            <button onClick={() => deleteTodo(todo._id)}>
-              <CheckIcon />
-            </button>
-            <button onClick={() => setConfirmDeleteMode(false)}>
-              <CancelIcon />
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="todo-task" key={todo._id}>
-          <div className="todo-task-description">{todo.todo}</div>
-          <div className="todo-task-icons">
-            <button onClick={() => setConfirmDeleteMode(true)}>
-              <DeleteIcon />
-            </button>
-            <button onClick={() => deleteTodo(todo._id)}>
-              <EditIcon />
-            </button>
-          </div>
-        </div>
-      )} */}
-    </>
-  );
+  return <>{renderTodoTask()}</>;
 };
 
 export default Task;

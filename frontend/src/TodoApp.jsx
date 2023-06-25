@@ -62,7 +62,38 @@ const TodoApp = () => {
     }
   };
 
-  console.log(todos);
+  const editTodo = async (id, todo) => {
+    try {
+      const response = await axios({
+        method: "put",
+        url: `http://localhost:4000/todo`,
+        data: {
+          id,
+          todo,
+        },
+      });
+
+      if (response) {
+        console.log(response)
+        const editedTodo = response.data.editTodo;
+        console.log(editedTodo)
+        const newTodoList = todos.map((todo) => {
+          if (todo._id === editedTodo._id) {
+            return editedTodo;
+          } else {
+            return todo;
+          }
+        });
+        setTodos(newTodoList);
+      } else {
+        throw Error("No response received.");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // console.log(todos);
   return (
     <div className="todo-container">
       <header>
@@ -82,7 +113,9 @@ const TodoApp = () => {
       </header>
       <main className="todo-task-container">
         {todos.map((todo) => {
-          return <Task deleteTodo={deleteTodo} todo={todo} />;
+          return (
+            <Task deleteTodo={deleteTodo} todo={todo} editTodo={editTodo} />
+          );
         })}
       </main>
     </div>

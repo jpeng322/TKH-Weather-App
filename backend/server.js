@@ -71,6 +71,32 @@ app.delete("/todo", async (req, res) => {
   }
 });
 
+app.put("/todo", async (req, res) => {
+  console.log(req.body);
+  const { id, todo } = req.body;
+  try {
+    //find all users that are not yourself ...
+    const editTodo = await Todo.findByIdAndUpdate(
+      id,
+      {
+        todo,
+      },
+      { new: true }
+    );
+    console.log(editTodo);
+    if (editTodo) {
+      res.status(200).json({
+        editTodo,
+        success: true,
+      });
+    } else {
+      res.status(400).json({ success: false, message: "No todo edited" });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+});
+
 app.listen(process.env.PORT || 4000, () => {
   console.log(
     `Server listening on ${process.env.PORT || 4000}, connected to server ${
