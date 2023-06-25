@@ -11,7 +11,7 @@ export const getWeatherData = async () => {
 
     if (response) {
       const data = response.data;
-      console.log(data);
+      // console.log(data);
       return data;
     }
   } catch (e) {
@@ -29,6 +29,7 @@ export const getTodoData = async () => {
     if (response) {
       const listOfTodos = response.data.listOfTodos;
       console.log(listOfTodos);
+
       return listOfTodos;
     }
   } catch (e) {

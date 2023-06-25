@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import todo from "../../backend/models/todo";
 import axios from "axios";
+
+//icons
 import { EditIcon, DeleteIcon } from "./Icons";
+
+//styling
 import "./CSS/Todo.css";
+
+//components
+import Task from "../components/Task";
 const TodoApp = () => {
   const listOfTodos = useLoaderData();
   const [todos, setTodos] = useState(listOfTodos);
@@ -32,6 +38,30 @@ const TodoApp = () => {
     }
   };
 
+  const deleteTodo = async (id) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/todo`,
+        data: {
+          id,
+        },
+      });
+
+      if (response) {
+        const deletedTodo = response.data.deleteTodo;
+        const newTodoList = todos.filter(
+          (todo) => todo._id !== deletedTodo._id
+        );
+        setTodos(newTodoList);
+      } else {
+        throw Error("No response received.");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   console.log(todos);
   return (
     <div className="todo-container">
@@ -52,15 +82,7 @@ const TodoApp = () => {
       </header>
       <main className="todo-task-container">
         {todos.map((todo) => {
-          return (
-            <div className="todo-task" key={todo._id}>
-              <div className="todo-task-description">{todo.todo}</div>
-              <div className="todo-task-icons">
-                <DeleteIcon />
-                <EditIcon />
-              </div>
-            </div>
-          );
+          return <Task deleteTodo={deleteTodo} todo={todo} />;
         })}
       </main>
     </div>

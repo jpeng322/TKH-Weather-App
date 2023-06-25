@@ -58,7 +58,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  padding: 5% 10%;
+  padding: 2rem 10%;
 }
 
 .todo-task {
@@ -68,22 +68,73 @@
   width: 100%;
   text-transform: capitalize;
   background-color: var(--main-color);
-  color: var(--highlight-color);
+  color: var(--main-color);
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 0.5rem;
+  background-size: 200% 200%;
+  transition: background-position 0.75s;
+  background-image: linear-gradient(
+    to left,
+    var(--main-color) 50%,
+    var(--highlight-color) 0
+  );
+  background-position: left;
 }
 
 .todo-task-icons {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: .25rem;
+  gap: 0.4rem;
 }
 
-.todo-task-icons > *:nth-child(1) {
-  margin-top: 1px;
+.todo-task-icons > *:nth-child(2) {
+  /* margin-top: 1px; */
   /* border: 1px solid blue; */
-  width: 26px;
-  height: 26px;
+  width: 21px;
+  height: 21px;
+}
+
+.todo-task-icons button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: var(--main-color);
+  cursor: pointer;
+}
+
+/* .slide-left {
+  animation: 1s slide-left;
+}
+@keyframes slide-left {
+  from {
+   background-color: var(--main-color);
+  }
+  to {
+    background-color: var(--highlight-color);
+  }
+} */
+
+.slide-left {
+  background-position: right;
+  /* background-position: left; */
+}
+
+.todo-task.slide-left {
+  color: var(--highlight-color);
+}
+
+.todo-task.slide-left .todo-task-icons button {
+  background-color: var(--main-color);
+  border: none;
+  color: var(--highlight-color);
+  /* border: 1px solid red; */
+}
+
+.todo-task.slide-left .todo-task-icons>*:nth-child(2) {
+    width: 25px;
+    height: 25px;
 }

@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import Todo from "./models/todo.js";
 import "dotenv/config";
-import cors from "cors"
+import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -33,7 +33,6 @@ app.post("/todo", async (req, res) => {
 });
 
 app.get("/todo", async (req, res) => {
-  console.log("explore");
   try {
     //find all users that are not yourself ...
     const listOfTodos = await Todo.find();
@@ -53,19 +52,19 @@ app.get("/todo", async (req, res) => {
 });
 
 app.delete("/todo", async (req, res) => {
-  console.log("explore");
+  console.log();
+  const { id } = req.body;
   try {
     //find all users that are not yourself ...
-    const listOfTodos = await Todo.findAndDelete();
-    console.log(listOfTodos);
+    const deleteTodo = await Todo.findByIdAndDelete(id);
 
-    if (listOfTodos) {
+    if (deleteTodo) {
       res.status(200).json({
-        listOfTodos,
+        deleteTodo,
         success: true,
       });
     } else {
-      res.status(400).json({ success: false, message: "No todos found" });
+      res.status(400).json({ success: false, message: "No todo deleted" });
     }
   } catch (e) {
     console.log(e.message);
