@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Outlet } from "react-router-dom";
+import TodoApp from "./TodoApp";
+import { v4 as uuidv4 } from "uuid";
 
 const WeatherApp = () => {
   const loaderWeatherData = useLoaderData();
@@ -8,7 +10,7 @@ const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState(loaderWeatherData);
 
   const [fiveDayData, setFiveDayData] = useState();
-  const [toggleDaily, setToggleDaily] = useState();
+  const [toggleDaily, setToggleDaily] = useState(true);
 
   const KelvinToFah = (temp) => {
     const fah = Math.ceil(((temp - 273.15) * 9) / 5 + 32);
@@ -17,20 +19,15 @@ const WeatherApp = () => {
   };
 
   const UtcToUsa = (time) => {
-    // var utcTime = new Date("2023-06-24 03:00:00");
     const utcTime = new Date(time);
     let usaTime = utcTime.toLocaleString("en-US", {
       timeZone: "America/New_York",
     });
-    // console.log(usaTime.split(" ")[1].replace(/[0:]/g, ''))
     usaTime =
       //   usaTime.split(" ")[0] +
       //   " " +
       usaTime.split(" ")[1].replace(/[0:]/g, "") + " " + usaTime.split(" ")[2];
 
-    // console.log(date, noZeros, usaTime.split(" ")[2])
-    // usaTime = usaTime.replace(/[0:]/g, '');
-    // const newUsa= usaTime.replaceAll("0", " ").replaceAll(":"," ")
     return usaTime;
   };
 
@@ -67,27 +64,14 @@ const WeatherApp = () => {
         }
         dataArray.push(weatherData.list[counter]);
         counter++;
-        // console.log(counter)
       }
-      console.log(arrayOfDaysData);
+      // console.log(arrayOfDaysData);
 
       setFiveDayData(arrayOfDaysData);
     };
 
     createData();
   }, []);
-
-  console.log(fiveDayData);
-
-  //   const startingPrice = fiveDayData[0].dataArray.reduce(function (prev, curr) {
-  //     return prev.main.temp_max < curr.main.temp_min ? prev.main.temp_max : curr.main.temp_min;
-  //   });
-
-  //   console.log(
-  //     fiveDayData[0].dataArray.reduce(function (prev, curr) {
-  //       return prev.main.temp_max < curr.main.temp_min ? prev : curr;
-  //     })
-  //   );
 
   const getHighOrLowTemp = (dataArray, type = "high") => {
     const tempObj = dataArray.dataArray.reduce(function (prev, curr) {
@@ -104,7 +88,6 @@ const WeatherApp = () => {
     return temp;
   };
 
-  // console.log(starting)
   return (
     <>
       <div className="weather-container">
@@ -125,57 +108,43 @@ const WeatherApp = () => {
             </button>
           </div>
         </header>
-        {/* <div className="weather-cards-container">
-            {weatherData.list.map((day, index) => {
-              return (
-                <div key={index} className="weather-card">
-                  <div className="weather-temp">
-                    {KelvinToFah(day.main.temp)} °F
-                  </div>
-                  <img
-                    src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-                    alt="weather_icon"
-                  />
-                  <div className="weather-description">
-                    {day.weather[0].description}
-                  </div>
-                  <div>{UtcToUsa(day.dt_txt)}</div>
-                </div>
-              );
-            })}
-          </div> */}
         {toggleDaily
           ? fiveDayData && (
-              <div className="weather-daily-cards-container">
-                {fiveDayData.map((dayArray) => {
-                  return (
-                    <div className="weather-daily">
-                      <h3> {UtcToDay(dayArray.date)} </h3>
-                      <div className="weather-daily-info">
-                        <div className="weather-card">
-                          <div className="weather-temp">
-                            {KelvinToFah(dayArray.dataArray[3].main.temp)} °F
-                          </div>
-                          <div className="weather-daily-high-low">
-                            <div>
-                              High: {getHighOrLowTemp(dayArray, "high")}
+              <>
+                <div className="weather-daily-cards-container">
+                  {fiveDayData.map((dayArray) => {
+                    return (
+                      <div key={uuidv4()} className="weather-daily">
+                        <h3> {UtcToDay(dayArray.date)} </h3>
+                        <div className="weather-daily-info">
+                          <div className="weather-card">
+                            <div className="weather-temp">
+                              {KelvinToFah(dayArray.dataArray[0].main.temp)} °F
                             </div>
-                            <div>Low: {getHighOrLowTemp(dayArray, "low")}</div>
+                            <div className="weather-daily-high-low">
+                              <div>
+                                High: {getHighOrLowTemp(dayArray, "high")}
+                              </div>
+                              <div>
+                                Low: {getHighOrLowTemp(dayArray, "low")}
+                              </div>
+                            </div>
+                            <img
+                              src={`https://openweathermap.org/img/wn/${dayArray.dataArray[0].weather[0].icon}@2x.png`}
+                              alt="weather_icon"
+                            />
+                            <div className="weather-description">
+                              {dayArray.dataArray[0].weather[0].description}
+                            </div>
+                            <div>{UtcToUsa(dayArray.dataArray[0].dt_txt)}</div>
                           </div>
-                          <img
-                            src={`https://openweathermap.org/img/wn/${dayArray.dataArray[0].weather[0].icon}@2x.png`}
-                            alt="weather_icon"
-                          />
-                          <div className="weather-description">
-                            {dayArray.dataArray[3].weather[0].description}
-                          </div>
-                          <div>{UtcToUsa(dayArray.dataArray[3].dt_txt)}</div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+                <Outlet />
+              </>
             )
           : fiveDayData && (
               <div className="weather-cards-container">
@@ -184,9 +153,9 @@ const WeatherApp = () => {
                     <div className="weather-day">
                       <h3> {UtcToDay(dayArray.date)} </h3>
                       <div className="weather-day-info">
-                        {dayArray.dataArray.map((day, index) => {
+                        {dayArray.dataArray.map((day) => {
                           return (
-                            <div key={index} className="weather-card">
+                            <div key={day.dt} className="weather-card">
                               <div className="weather-temp">
                                 {KelvinToFah(day.main.temp)} °F
                               </div>

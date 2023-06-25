@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getData = async () => {
+export const getWeatherData = async () => {
   try {
     const response = await axios({
       method: "get",
@@ -13,6 +13,23 @@ export const getData = async () => {
       const data = response.data;
       console.log(data);
       return data;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getTodoData = async () => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `http://localhost:4000/todo`,
+    });
+
+    if (response) {
+      const listOfTodos = response.data.listOfTodos;
+      console.log(listOfTodos);
+      return listOfTodos;
     }
   } catch (e) {
     console.log(e);

@@ -3,25 +3,25 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import WeatherApp from "./WeatherApp";
-import { getData } from "../api";
+import { getTodoData, getWeatherData } from "../api";
+import TodoApp from "./TodoApp";
 function App() {
-
-
-  
   const router = createBrowserRouter([
     {
       path: "/",
       element: <WeatherApp />,
-      loader: getData,
+      loader: getWeatherData,
+      children: [
+        {
+          path: "/",
+          element: <TodoApp />,
+          loader: getTodoData,
+        },
+      ],
     },
   ]);
 
-
-
-  return (
-    <RouterProvider router={router} />
-   
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
