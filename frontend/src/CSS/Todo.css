@@ -106,6 +106,10 @@
   cursor: pointer;
 }
 
+.todo-task-icons .complete-badge {
+  color: var(--main-color);
+  fill: var(--main-color);
+}
 /* .slide-left {
   animation: 1s slide-left;
 }
@@ -153,11 +157,18 @@
   color: var(--highlight-color);
   font-family: "Poppins", sans-serif;
   text-transform: capitalize;
-  animation: reveal .5s;
+  animation: reveal 0.5s;
   position: right;
   padding-left: 1rem;
   /* padding: .25rem .25rem .25rem 1rem; */
-  border-radius: .25rem;
+  border-radius: 0.25rem;
+}
+
+.todo-task.completed {
+  /* background-image: none; */
+  /* background-color: #fff; */
+  color: var(--main-color);
+  background-image: linear-gradient(to left, var(--main-color) 50%, #fff 0);
 }
 
 @keyframes slide-left {
@@ -168,7 +179,6 @@
     width: 0%;
   }
 }
-
 
 @keyframes reveal {
   from {

@@ -74,12 +74,43 @@ const TodoApp = () => {
       });
 
       if (response) {
-        console.log(response)
+        console.log(response);
         const editedTodo = response.data.editTodo;
-        console.log(editedTodo)
+        console.log(editedTodo);
         const newTodoList = todos.map((todo) => {
           if (todo._id === editedTodo._id) {
             return editedTodo;
+          } else {
+            return todo;
+          }
+        });
+        setTodos(newTodoList);
+      } else {
+        throw Error("No response received.");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const confirmTodo = async (id) => {
+    try {
+      const response = await axios({
+        method: "put",
+        url: `http://localhost:4000/todo/status`,
+        data: {
+          id,
+          status: true,
+        },
+      });
+
+      if (response) {
+        console.log(response);
+        const confirmedTodo = response.data.confirmedTodo;
+        console.log(confirmedTodo)
+        const newTodoList = todos.map((todo) => {
+          if (todo._id === confirmedTodo._id) {
+            return confirmedTodo;
           } else {
             return todo;
           }
@@ -114,7 +145,13 @@ const TodoApp = () => {
       <main className="todo-task-container">
         {todos.map((todo) => {
           return (
-            <Task deleteTodo={deleteTodo} todo={todo} editTodo={editTodo} />
+            <Task
+              deleteTodo={deleteTodo}
+              todo={todo}
+              editTodo={editTodo}
+              confirmTodo={confirmTodo}
+              className="tasktask"
+            />
           );
         })}
       </main>

@@ -4,6 +4,9 @@ const todoSchema = new mongoose.Schema({
   todo: {
     type: String,
   },
+  status: {
+    type: Boolean, default: false
+  }
 });
 
 mongoose.model("Todo", todoSchema);

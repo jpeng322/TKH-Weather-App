@@ -97,6 +97,33 @@ app.put("/todo", async (req, res) => {
   }
 });
 
+
+app.put("/todo/status", async (req, res) => {
+  console.log(req.body);
+  const { id, status } = req.body;
+  try {
+    //find all users that are not yourself ...
+    const confirmedTodo = await Todo.findByIdAndUpdate(
+      id,
+      {
+        status,
+      },
+      { new: true }
+    );
+    console.log(confirmedTodo);
+    if (confirmedTodo) {
+      res.status(200).json({
+        confirmedTodo,
+        success: true,
+      });
+    } else {
+      res.status(400).json({ success: false, message: "No todo edited" });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+});
+
 app.listen(process.env.PORT || 4000, () => {
   console.log(
     `Server listening on ${process.env.PORT || 4000}, connected to server ${

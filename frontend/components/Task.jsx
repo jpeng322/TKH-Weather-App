@@ -1,16 +1,26 @@
 import React, { useState } from "react";
-import { DeleteIcon, EditIcon, CheckIcon, CancelIcon } from "../src/Icons";
-const Task = ({ todo, deleteTodo, editTodo }) => {
+import {
+  DeleteIcon,
+  EditIcon,
+  CheckIcon,
+  CancelIcon,
+  CompleteIcon,
+  CompleteBadgeIcon,
+} from "../src/Icons";
+const Task = ({ todo, deleteTodo, editTodo, confirmTodo }) => {
   const [confirmDeleteMode, setConfirmDeleteMode] = useState(false);
+  const [confirmCompleteMode, setConfirmCompleteMode] = useState(false);
   const [editTaskMode, setEditTaskMode] = useState(false);
   const [editTaskInput, setEditTaskInput] = useState(todo.todo);
   const [showEditTask, setShowEditTask] = useState(false);
-console.log(editTaskInput)
+
   const renderEditInput = () => {
     setTimeout(() => {
       setShowEditTask(true);
     }, 300);
   };
+
+  // console.log(todo);
   const renderTodoTask = () => {
     if (confirmDeleteMode) {
       return (
@@ -60,22 +70,55 @@ console.log(editTaskInput)
           </div>
         </div>
       );
-    } else {
+    } else if (confirmCompleteMode) {
       return (
-        <div className="todo-task" key={todo._id}>
-          <div className="todo-task-description">{todo.todo}</div>
+        <div className="todo-task slide-left" key={todo._id}>
+          <div className="todo-task-description">Confirm Complete?</div>
           <div className="todo-task-icons">
-            <button onClick={() => setConfirmDeleteMode(true)}>
-              <DeleteIcon />
-            </button>
             <button
               onClick={() => {
-                setEditTaskMode(true);
-                renderEditInput();
+                if (confirmTodo(todo._id)) {
+                  setConfirmCompleteMode(false);
+                }
               }}
             >
-              <EditIcon />
+              <CheckIcon />
             </button>
+            <button onClick={() => setConfirmCompleteMode(false)}>
+              <CancelIcon />
+            </button>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={`todo-task ${todo.status === true ? "completed" : ""}`}
+          key={todo._id}
+        >
+          <div className="todo-task-description">{todo.todo}</div>
+
+          <div className="todo-task-icons">
+            {todo.status === true ? (
+              <CompleteBadgeIcon />
+            ) : (
+              <>
+                <button onClick={() => setConfirmCompleteMode(true)}>
+                  <CompleteIcon />
+                </button>
+                <button onClick={() => setConfirmDeleteMode(true)}>
+                  <DeleteIcon />
+                </button>
+                <button
+                  onClick={() => {
+                    setEditTaskMode(true);
+                    renderEditInput();
+                  }}
+                >
+                  <EditIcon />
+                </button>
+              </>
+            )}
           </div>
         </div>
       );
