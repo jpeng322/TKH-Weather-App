@@ -13,25 +13,13 @@ const Task = ({ todo, deleteTodo, editTodo, confirmTodo }) => {
   const [editTaskMode, setEditTaskMode] = useState(false);
   const [editTaskInput, setEditTaskInput] = useState(todo.todo);
   const [showEditTask, setShowEditTask] = useState(false);
-  // const editTodoDiv = document.querySelector(
-  //   ".edit-mode .todo-task-description"
-  // );
 
   const renderEditInput = () => {
     setTimeout(() => {
-     
-      // const editTodoInput = document.querySelector(
-      //   ".edit-input"
-      // );
-      // console.log(editTodoInput)
-      // editTodoInput.style.padding = "1rem";
-      // editTodoDiv.style.padding = "0rem";
       setShowEditTask(true);
     }, 300);
   };
 
-  // console.log(editTodoDiv.style.color = "red")
-  // console.log(todo);
   const renderTodoTask = () => {
     if (confirmDeleteMode) {
       return (
@@ -62,8 +50,9 @@ const Task = ({ todo, deleteTodo, editTodo, confirmTodo }) => {
                 value={editTaskInput}
                 onChange={(e) => setEditTaskInput(e.target.value)}
               />
-            ) : <div>
-              { todo.todo }</div>}
+            ) : (
+              <div>{todo.todo}</div>
+            )}
           </div>
           <div className="todo-task-icons">
             <button

@@ -7,19 +7,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 mongoose.set("strictQuery", true);
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(console.log("connected to mongo"));
-
-app.get("/", (req, res) => {
-  res.send("GET RESP");
-});
+mongoose.connect(process.env.MONGODB_URI);
 
 app.post("/todo", async (req, res) => {
-  console.log(req.body);
   try {
     const todo = new Todo(req.body);
-    console.log(todo, "POST REUQST");
+
     await todo.save();
 
     if (todo) {
@@ -27,16 +20,13 @@ app.post("/todo", async (req, res) => {
     } else {
       res.status(400).json({ mssg: "empty object" });
     }
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) {}
 });
 
 app.get("/todo", async (req, res) => {
   try {
     //find all users that are not yourself ...
     const listOfTodos = await Todo.find();
-    console.log(listOfTodos);
 
     if (listOfTodos) {
       res.status(200).json({
@@ -46,13 +36,10 @@ app.get("/todo", async (req, res) => {
     } else {
       res.status(400).json({ success: false, message: "No todos found" });
     }
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) {}
 });
 
 app.delete("/todo", async (req, res) => {
-  console.log();
   const { id } = req.body;
   try {
     //find all users that are not yourself ...
@@ -66,13 +53,10 @@ app.delete("/todo", async (req, res) => {
     } else {
       res.status(400).json({ success: false, message: "No todo deleted" });
     }
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) {}
 });
 
 app.put("/todo", async (req, res) => {
-  console.log(req.body);
   const { id, todo } = req.body;
   try {
     //find all users that are not yourself ...
@@ -83,7 +67,7 @@ app.put("/todo", async (req, res) => {
       },
       { new: true }
     );
-    console.log(editTodo);
+
     if (editTodo) {
       res.status(200).json({
         editTodo,
@@ -92,14 +76,10 @@ app.put("/todo", async (req, res) => {
     } else {
       res.status(400).json({ success: false, message: "No todo edited" });
     }
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) {}
 });
 
-
 app.put("/todo/status", async (req, res) => {
-  console.log(req.body);
   const { id, status } = req.body;
   try {
     //find all users that are not yourself ...
@@ -110,7 +90,7 @@ app.put("/todo/status", async (req, res) => {
       },
       { new: true }
     );
-    console.log(confirmedTodo);
+
     if (confirmedTodo) {
       res.status(200).json({
         confirmedTodo,
@@ -119,9 +99,7 @@ app.put("/todo/status", async (req, res) => {
     } else {
       res.status(400).json({ success: false, message: "No todo edited" });
     }
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) {}
 });
 
 app.listen(process.env.PORT || 4000, () => {

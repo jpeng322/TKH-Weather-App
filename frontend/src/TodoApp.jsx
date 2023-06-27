@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 
-//icons
-import { EditIcon, DeleteIcon } from "./Icons";
 
 //styling
 import "./CSS/Todo.css";
@@ -14,7 +12,7 @@ const TodoApp = () => {
   const listOfTodos = useLoaderData();
   const [todos, setTodos] = useState(listOfTodos);
   const [task, setTask] = useState("");
-  console.log(task);
+
   const createTodo = async (e) => {
     e.preventDefault();
     try {
@@ -27,15 +25,14 @@ const TodoApp = () => {
       });
 
       if (response) {
-        console.log(response);
         const newTodo = response.data;
-        setTask("")
+        setTask("");
         setTodos([...todos, newTodo]);
       } else {
         throw Error("No response received.");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
 
@@ -59,7 +56,7 @@ const TodoApp = () => {
         throw Error("No response received.");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
 
@@ -75,9 +72,8 @@ const TodoApp = () => {
       });
 
       if (response) {
-        console.log(response);
         const editedTodo = response.data.editTodo;
-        console.log(editedTodo);
+
         const newTodoList = todos.map((todo) => {
           if (todo._id === editedTodo._id) {
             return editedTodo;
@@ -90,7 +86,7 @@ const TodoApp = () => {
         throw Error("No response received.");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
 
@@ -106,9 +102,8 @@ const TodoApp = () => {
       });
 
       if (response) {
-        console.log(response);
         const confirmedTodo = response.data.confirmedTodo;
-        console.log(confirmedTodo);
+
         const newTodoList = todos.map((todo) => {
           if (todo._id === confirmedTodo._id) {
             return confirmedTodo;
@@ -121,7 +116,7 @@ const TodoApp = () => {
         throw Error("No response received.");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
 
@@ -137,7 +132,6 @@ const TodoApp = () => {
             name="create-todo"
             value={task}
           />
-          {/* <label htmlFor="create-todo">Create Todo</label> */}
           <button className="add-todo-button" type="submit">
             Add Todo
           </button>
