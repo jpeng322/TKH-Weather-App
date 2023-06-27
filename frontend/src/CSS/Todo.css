@@ -4,6 +4,7 @@
   background-color: var(--main-background-color);
   border-radius: 0.5rem;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 3rem;  
 }
 
 .todo-container header {
@@ -59,6 +60,7 @@
   align-items: center;
   gap: 1rem;
   padding: 2rem 10%;
+
 }
 
 .todo-task {

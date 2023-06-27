@@ -4,6 +4,7 @@ import { useLoaderData, Outlet } from "react-router-dom";
 import TodoApp from "./TodoApp";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import "../src/CSS/Weather.css"
 const WeatherApp = () => {
   const loaderWeatherData = useLoaderData();
   const currentDate = new Date(moment.utc());
