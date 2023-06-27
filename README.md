@@ -5,6 +5,28 @@ New York Weather is an application that shows users information on New York's we
 
 Deployed site: https://new-york-weather.onrender.com/
 
+
+## Installation
+
+For users who would like to use the application locally:
+
+To install all dependencies:
+
+```bash
+npm install
+```
+
+To start the application: 
+```bash
+npm run dev
+```
+
+To start the server:
+```bash
+npm run start
+```
+To run the application properly, make sure to have a MongoDB server link and OpenWeatherAPI key in the env files. Please take a look at the test.env files as a reference to your env files.
+
 ## Usage
 
 Daily View: 
@@ -31,23 +53,3 @@ To mark complete a todo, click on the boxed check icon. You will then be asked t
 
 ![Alt text](./imagesRM/image-4.png)
 
-
-## Installation
-
-For users who would like to use the application locally:
-
-To install all dependencies:
-
-```bash
-npm install
-```
-
-To start the application: 
-```bash
-npm run dev
-```
-
-To start the server:
-```bash
-npm run start
-```

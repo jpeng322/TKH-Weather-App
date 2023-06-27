@@ -3,12 +3,41 @@ import axios from "axios";
 import { useLoaderData, Outlet } from "react-router-dom";
 import TodoApp from "./TodoApp";
 import { v4 as uuidv4 } from "uuid";
-
+import moment from "moment";
 const WeatherApp = () => {
   const loaderWeatherData = useLoaderData();
-
+  const currentDate = new Date(moment.utc());
+  // console.log(currentDate);
   const [weatherData, setWeatherData] = useState(loaderWeatherData);
-  console.log(weatherData);
+  // console.log(new Date(weatherData.list[0].dt_txt));
+
+  const arrayOfTimes = [
+    new Date(weatherData.list[1].dt_txt),
+    new Date(weatherData.list[2].dt_txt),
+    new Date(weatherData.list[0].dt_txt),
+  ];
+
+  let nearestDate;
+
+  arrayOfTimes.forEach((date) => {
+    let diff = moment(date).diff(currentDate);
+    if (diff > 0) {
+      if (nearestDate) {
+        if (moment(date).diff(moment(nearestDate)) < 0) {
+          nearestDate = date;
+        }
+      } else {
+        nearestDate = date;
+      }
+    }
+    console.log(nearestDate);
+  });
+
+  // const nearestHour = nearestDate.split(" ")
+  console.log(nearestDate.toString().split(" ")[4]);
+  // console.log(weatherData.list[0].dt_txt);
+
+  console.log(nearestDate);
   const [fiveDayData, setFiveDayData] = useState();
   const [toggleDaily, setToggleDaily] = useState(true);
 
@@ -48,6 +77,17 @@ const WeatherApp = () => {
     return typeOfDay;
   }
 
+  function getNearestHour(dayArray) {
+    const nearestHour = nearestDate.toString().split(" ")[4];
+    const nearestHourObj = dayArray.find((dayData) => {
+      console.log(dayData);
+      const dayDataHour = dayData.dt_txt.split(" ")[1];
+      return dayDataHour === nearestHour;
+    });
+
+    return nearestHourObj;
+  }
+
   useEffect(() => {
     const createData = () => {
       const arrayOfDaysData = [];
@@ -68,8 +108,7 @@ const WeatherApp = () => {
           }
         }
         dataArray.push(weatherData.list[counter]);
-        counter++
-        console.log(dataArray, counter, arrayOfDaysData);
+        counter++;
       }
 
       arrayOfDaysData.push({
@@ -79,8 +118,8 @@ const WeatherApp = () => {
       // arrayOfDaysData.push(dataArray)
       // console.log(arrayOfDaysData, counter);
 
-      const fiveDayArray = arrayOfDaysData.slice(0, 5)
-      console.log(arrayOfDaysData)
+      const fiveDayArray = arrayOfDaysData.slice(0, 5);
+      console.log(arrayOfDaysData);
       setFiveDayData(fiveDayArray);
     };
 
@@ -106,6 +145,7 @@ const WeatherApp = () => {
     <>
       <div className="weather-container">
         <header>
+          {/* <h1>{moment.utc()._d}</h1> */}
           <h1>{weatherData.city.name} 5-Day Forecast</h1>
           <div className="button-container">
             <button
@@ -128,6 +168,13 @@ const WeatherApp = () => {
                 <div className="weather-daily-cards-container">
                   {fiveDayData.map((dayArray) => {
                     // console.log(UtcToDay(dayArray.date).split(",")[0]);
+                    // {console.log(dayArray)}
+                    {
+                      console.log(
+                        getNearestHour(dayArray.dataArray).main.temp
+                      );
+                    }
+
                     return (
                       <div key={uuidv4()} className="weather-daily">
                         <div className="weather-daily-header">
@@ -142,7 +189,8 @@ const WeatherApp = () => {
                         <div className="weather-daily-info">
                           <div className="weather-card">
                             <div className="weather-temp">
-                              {KelvinToFah(dayArray.dataArray[0].main.temp)} °F
+                              {KelvinToFah(getNearestHour(dayArray.dataArray).main.temp
+                              )} °F
                             </div>
                             <div className="weather-daily-high-low">
                               <div>
@@ -152,15 +200,26 @@ const WeatherApp = () => {
                                 Low: {getHighOrLowTemp(dayArray, "low")}
                               </div>
                             </div>
-
                             <img
-                              src={`https://openweathermap.org/img/wn/${dayArray.dataArray[0].weather[0].icon}@2x.png`}
+                              src={`https://openweathermap.org/img/wn/${getNearestHour(dayArray.dataArray).weather[0].icon}@2x.png`}
                               alt="weather_icon"
                             />
+                            {/* <img
+                              src={`https://openweathermap.org/img/wn/${dayArray.dataArray[0].weather[0].icon}@2x.png`}
+                              alt="weather_icon"
+                            /> */}
                             <div className="weather-description">
-                              {dayArray.dataArray[0].weather[0].description}
+                              {getNearestHour(dayArray.dataArray).weather[0].description}
                             </div>
-                            <div>{UtcToUsa(dayArray.dataArray[0].dt_txt)}</div>
+                            {/* <div className="weather-description">
+                              {dayArray.dataArray[0].weather[0].description}
+                            </div> */}
+                            {/* <div>{UtcToUsa(dayArray.dataArray[0].dt_txt)}</div> */}
+                            {/* <div>
+                              {UtcToUsa(
+                                getNearestHour(dayArray.dataArray).dt_txt
+                              )}
+                            </div> */}
                           </div>
                         </div>
                       </div>
