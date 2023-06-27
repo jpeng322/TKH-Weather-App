@@ -79,7 +79,9 @@ const WeatherApp = () => {
       // arrayOfDaysData.push(dataArray)
       // console.log(arrayOfDaysData, counter);
 
-      setFiveDayData(arrayOfDaysData);
+      const fiveDayArray = arrayOfDaysData.slice(0, 5)
+      console.log(arrayOfDaysData)
+      setFiveDayData(fiveDayArray);
     };
 
     createData();

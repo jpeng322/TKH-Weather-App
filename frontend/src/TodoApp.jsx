@@ -127,7 +127,7 @@ const TodoApp = () => {
   return (
     <div className="todo-container">
       <header>
-        <h1>Todo App</h1>
+        <h1>Todo List</h1>
         <form onSubmit={(e) => createTodo(e)}>
           <input
             className="todo-input"
