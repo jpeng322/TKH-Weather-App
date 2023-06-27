@@ -13,13 +13,24 @@ const Task = ({ todo, deleteTodo, editTodo, confirmTodo }) => {
   const [editTaskMode, setEditTaskMode] = useState(false);
   const [editTaskInput, setEditTaskInput] = useState(todo.todo);
   const [showEditTask, setShowEditTask] = useState(false);
+  // const editTodoDiv = document.querySelector(
+  //   ".edit-mode .todo-task-description"
+  // );
 
   const renderEditInput = () => {
     setTimeout(() => {
+     
+      // const editTodoInput = document.querySelector(
+      //   ".edit-input"
+      // );
+      // console.log(editTodoInput)
+      // editTodoInput.style.padding = "1rem";
+      // editTodoDiv.style.padding = "0rem";
       setShowEditTask(true);
     }, 300);
   };
 
+  // console.log(editTodoDiv.style.color = "red")
   // console.log(todo);
   const renderTodoTask = () => {
     if (confirmDeleteMode) {
@@ -39,15 +50,20 @@ const Task = ({ todo, deleteTodo, editTodo, confirmTodo }) => {
     } else if (editTaskMode) {
       return (
         <div className="edit-mode todo-task slide-left" key={todo._id}>
-          <div className="todo-task-description">
-            {showEditTask && (
+          <div
+            className={`todo-task-description ${
+              showEditTask ? "edit-task" : ""
+            }`}
+          >
+            {showEditTask ? (
               <input
                 className="edit-input"
                 type="text"
                 value={editTaskInput}
                 onChange={(e) => setEditTaskInput(e.target.value)}
               />
-            )}
+            ) : <div>
+              { todo.todo }</div>}
           </div>
           <div className="todo-task-icons">
             <button

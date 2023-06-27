@@ -8,7 +8,7 @@ const WeatherApp = () => {
   const loaderWeatherData = useLoaderData();
 
   const [weatherData, setWeatherData] = useState(loaderWeatherData);
-
+  console.log(weatherData);
   const [fiveDayData, setFiveDayData] = useState();
   const [toggleDaily, setToggleDaily] = useState(true);
 
@@ -55,17 +55,29 @@ const WeatherApp = () => {
       let dataArray = [];
 
       while (counter < weatherData.list.length) {
+        // console.log(counter, weatherData.list[counter])
         if (weatherData.list[counter].dt_txt.split(" ")[1] === "00:00:00") {
-          arrayOfDaysData.push({
-            date: weatherData.list[counter - 1].dt_txt,
-            dataArray,
-          });
-          dataArray = [];
+          if (counter === 0) {
+            counter++;
+          } else {
+            arrayOfDaysData.push({
+              date: weatherData.list[counter - 1].dt_txt,
+              dataArray,
+            });
+            dataArray = [];
+          }
         }
         dataArray.push(weatherData.list[counter]);
-        counter++;
+        counter++
+        console.log(dataArray, counter, arrayOfDaysData);
       }
-      // console.log(arrayOfDaysData);
+
+      arrayOfDaysData.push({
+        date: weatherData.list[counter - 1].dt_txt,
+        dataArray,
+      });
+      // arrayOfDaysData.push(dataArray)
+      // console.log(arrayOfDaysData, counter);
 
       setFiveDayData(arrayOfDaysData);
     };
@@ -113,9 +125,18 @@ const WeatherApp = () => {
               <>
                 <div className="weather-daily-cards-container">
                   {fiveDayData.map((dayArray) => {
+                    // console.log(UtcToDay(dayArray.date).split(",")[0]);
                     return (
                       <div key={uuidv4()} className="weather-daily">
-                        <h3> {UtcToDay(dayArray.date)} </h3>
+                        <div className="weather-daily-header">
+                          <h3> {UtcToDay(dayArray.date).split(",")[0]} </h3>
+                          {/* <h3>
+                            {" "}
+                            {UtcToDay(dayArray.date).split(",")[1] +
+                              "," +
+                              UtcToDay(dayArray.date).split(",")[2]}{" "}
+                          </h3> */}
+                        </div>
                         <div className="weather-daily-info">
                           <div className="weather-card">
                             <div className="weather-temp">
@@ -129,6 +150,7 @@ const WeatherApp = () => {
                                 Low: {getHighOrLowTemp(dayArray, "low")}
                               </div>
                             </div>
+
                             <img
                               src={`https://openweathermap.org/img/wn/${dayArray.dataArray[0].weather[0].icon}@2x.png`}
                               alt="weather_icon"
