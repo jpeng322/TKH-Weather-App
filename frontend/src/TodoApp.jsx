@@ -20,7 +20,7 @@ const TodoApp = () => {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/todo`,
+        url: `${import.meta.env.VITE_BACKEND}/todo`,
         data: {
           todo: task,
         },
@@ -42,7 +42,7 @@ const TodoApp = () => {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/todo`,
+        url: `${import.meta.env.VITE_BACKEND}/todo`,
         data: {
           id,
         },
@@ -66,7 +66,7 @@ const TodoApp = () => {
     try {
       const response = await axios({
         method: "put",
-        url: `http://localhost:4000/todo`,
+        url: `${import.meta.env.VITE_BACKEND}/todo`,
         data: {
           id,
           todo,
@@ -97,7 +97,7 @@ const TodoApp = () => {
     try {
       const response = await axios({
         method: "put",
-        url: `http://localhost:4000/todo/status`,
+        url: `${import.meta.env.VITE_BACKEND}/todo/status`,
         data: {
           id,
           status: true,
@@ -107,7 +107,7 @@ const TodoApp = () => {
       if (response) {
         console.log(response);
         const confirmedTodo = response.data.confirmedTodo;
-        console.log(confirmedTodo)
+        console.log(confirmedTodo);
         const newTodoList = todos.map((todo) => {
           if (todo._id === confirmedTodo._id) {
             return confirmedTodo;
@@ -124,7 +124,6 @@ const TodoApp = () => {
     }
   };
 
-  // console.log(todos);
   return (
     <div className="todo-container">
       <header>
@@ -146,6 +145,7 @@ const TodoApp = () => {
         {todos.map((todo) => {
           return (
             <Task
+              key={todo._id}
               deleteTodo={deleteTodo}
               todo={todo}
               editTodo={editTodo}

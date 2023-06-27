@@ -23,7 +23,7 @@ export const getTodoData = async () => {
   try {
     const response = await axios({
       method: "get",
-      url: `http://localhost:4000/todo`,
+      url: `${import.meta.env.VITE_BACKEND}/todo`,
     });
 
     if (response) {
