@@ -8,28 +8,6 @@ const WeatherApp = () => {
   const currentDate = new Date(moment.utc());
   const [weatherData, setWeatherData] = useState(loaderWeatherData);
 
-  const arrayOfTimes = [
-    new Date(weatherData.list[1].dt_txt),
-    new Date(weatherData.list[2].dt_txt),
-    new Date(weatherData.list[0].dt_txt),
-  ];
-
-  let nearestDate;
-
-  arrayOfTimes.forEach((date) => {
-    let diff = moment(date).diff(currentDate);
-    if (diff > 0) {
-      if (nearestDate) {
-        if (moment(date).diff(moment(nearestDate)) < 0) {
-          nearestDate = date;
-        }
-      } else {
-        nearestDate = date;
-      }
-    }
-  });
-
-
   const [fiveDayData, setFiveDayData] = useState();
   const [toggleDaily, setToggleDaily] = useState(true);
 
@@ -63,7 +41,7 @@ const WeatherApp = () => {
   }
 
   function getNearestHour(dayArray) {
-    const nearestHour = nearestDate.toString().split(" ")[4];
+    const nearestHour = dayArray[0].dt_txt.toString().split(" ")[1];
     const nearestHourObj = dayArray.find((dayData) => {
       const dayDataHour = dayData.dt_txt.split(" ")[1];
       return dayDataHour === nearestHour;
@@ -190,7 +168,7 @@ const WeatherApp = () => {
               <Outlet />
             </>
           )
-          :fiveDayData && (
+        : fiveDayData && (
             <div className="weather-cards-container">
               {fiveDayData.map((dayArray) => {
                 return (
