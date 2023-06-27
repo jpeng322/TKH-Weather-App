@@ -14,7 +14,7 @@ const TodoApp = () => {
   const listOfTodos = useLoaderData();
   const [todos, setTodos] = useState(listOfTodos);
   const [task, setTask] = useState("");
-  console.log(todos);
+  console.log(task);
   const createTodo = async (e) => {
     e.preventDefault();
     try {
@@ -29,6 +29,7 @@ const TodoApp = () => {
       if (response) {
         console.log(response);
         const newTodo = response.data;
+        setTask("")
         setTodos([...todos, newTodo]);
       } else {
         throw Error("No response received.");
@@ -134,6 +135,7 @@ const TodoApp = () => {
             onChange={(e) => setTask(e.target.value)}
             type="text"
             name="create-todo"
+            value={task}
           />
           {/* <label htmlFor="create-todo">Create Todo</label> */}
           <button className="add-todo-button" type="submit">
