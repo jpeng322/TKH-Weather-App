@@ -25,7 +25,6 @@ app.post("/todo", async (req, res) => {
 
 app.get("/todo", async (req, res) => {
   try {
-    //find all users that are not yourself ...
     const listOfTodos = await Todo.find();
 
     if (listOfTodos) {
@@ -42,7 +41,6 @@ app.get("/todo", async (req, res) => {
 app.delete("/todo", async (req, res) => {
   const { id } = req.body;
   try {
-    //find all users that are not yourself ...
     const deleteTodo = await Todo.findByIdAndDelete(id);
 
     if (deleteTodo) {
@@ -59,7 +57,6 @@ app.delete("/todo", async (req, res) => {
 app.put("/todo", async (req, res) => {
   const { id, todo } = req.body;
   try {
-    //find all users that are not yourself ...
     const editTodo = await Todo.findByIdAndUpdate(
       id,
       {
@@ -82,7 +79,6 @@ app.put("/todo", async (req, res) => {
 app.put("/todo/status", async (req, res) => {
   const { id, status } = req.body;
   try {
-    //find all users that are not yourself ...
     const confirmedTodo = await Todo.findByIdAndUpdate(
       id,
       {
