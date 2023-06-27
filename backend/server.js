@@ -127,7 +127,7 @@ app.put("/todo/status", async (req, res) => {
 app.listen(process.env.PORT || 4000, () => {
   console.log(
     `Server listening on ${process.env.PORT || 4000}, connected to server ${
-      process.env.MONGODB_URI
+      process.env.MONGODB_URI || "MONGODB SERVER"
     }`
   );
 });
