@@ -9,11 +9,11 @@ Deployed site: https://new-york-weather.onrender.com/
 
 Daily View: 
 
-![Alt text](image.png)
+![Alt text](./imagesRM/image.png)
 
 3 Hour View: 
 
-![Alt text](image-1.png)
+![Alt text](./imagesRM/image-1.png)
 
 Todo List:
 
@@ -21,15 +21,15 @@ To add a todo, type into the input bar and click "Add Todo". The todo should app
 
 To delete a todo, click on the boxed X icon. You will then be asked to confirm delete. To delete the todo, press the check. To cancel, press the X.
 
-![Alt text](image-2.png)
+![Alt text](./imagesRM/image-2.png)
 
 To edit a todo, click on the pen icon. An input bar with the original todo will appear. To edit, type in the new todo and press check. To cancel, press the X.
 
-![Alt text](image-3.png)
+![Alt text](./imagesRM/image-3.png)
 
 To mark complete a todo, click on the boxed check icon. You will then be asked to confirm mark complete. To mark complete the todo, press the check. To cancel, press the X.
 
-![Alt text](image-4.png)
+![Alt text](./imagesRM/image-4.png)
 
 
 ## Installation
